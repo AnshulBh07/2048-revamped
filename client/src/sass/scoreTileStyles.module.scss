@@ -1,0 +1,21 @@
+@import "../sass/variables.scss";
+@import "../sass/mixins.scss";
+
+.container {
+  @include ButtonProp;
+  width: 5.5rem;
+  padding: 0.5rem 0.2rem;
+  cursor: none;
+
+  &:active {
+    scale: 1;
+  }
+
+  .title {
+    font-size: 0.9rem;
+  }
+
+  .score {
+    font-size: 1.8rem;
+  }
+}

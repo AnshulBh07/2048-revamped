@@ -1,0 +1,15 @@
+@import "./sass/variables.scss";
+@import "./sass//mixins.scss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  background-color: $pageBg;
+  min-height: 100vh;
+  @include flexProp(row, 0rem, center, center);
+  font-family: "poppins", sans-serif;
+}

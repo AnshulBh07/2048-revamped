@@ -1,0 +1,31 @@
+@mixin flexProp($direction, $gap, $justification, $alignment) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justification;
+  align-items: $alignment;
+  gap: $gap;
+  width: 100%;
+}
+
+@mixin ButtonProp() {
+  @include flexProp(column, 0.2rem, center, center);
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  color: $text2;
+  background-color: $boardBg;
+  box-shadow: none;
+  font-size: 1rem;
+  border: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+
+  .icon {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+
+  &:active {
+    scale: 0.95;
+  }
+}

@@ -1,0 +1,64 @@
+@import "../sass/mixins.scss";
+@import "../sass/variables.scss";
+
+.container {
+  @include flexProp(column, 1rem, flex-start, center);
+  width: 40%;
+  padding: 1rem 5rem;
+
+  .game_title {
+    @include flexProp(row, 0rem, space-between, center);
+
+    .title1 {
+      font-size: 5rem;
+      color: $text1;
+    }
+
+    .score_cards_wrapper {
+      @include flexProp(row, 0.5rem, flex-end, center);
+      flex-wrap: nowrap;
+      width: auto;
+
+      .score_dummy {
+        @include flexProp(row, 0rem, flex-end, center);
+        position: relative;
+        width: 5rem;
+
+        .score_animation {
+          font-size: 1.6rem;
+          font-weight: 600;
+          opacity: 0;
+          color: $text1;
+          animation: scoreAnimation 0.5s ease forwards;
+        }
+      }
+    }
+  }
+
+  .description {
+    @include flexProp(column, 0.5rem, flex-start, flex-start);
+    color: $text1;
+    font-size: 1.2rem;
+  }
+
+  .buttons_wrapper {
+    @include flexProp(row, 0.5rem, flex-end, center);
+
+    .option_btn {
+      @include ButtonProp;
+      width: 3rem;
+      height: 3rem;
+    }
+  }
+}
+
+@keyframes scoreAnimation {
+  0% {
+    opacity: 1;
+    transform: translateY(1.5rem);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-1.5rem);
+  }
+}
