@@ -32,6 +32,57 @@ export const generateStartMatrix: (
   return [matrix, coordsArr];
 };
 
+const delrow = [-1, 0, 1, 0];
+const delcol = [0, 1, 0, -1];
+
+const isMergePossible: (
+  row: number,
+  col: number,
+  matrix: number[][],
+  vis: number[][],
+  prevValue: number,
+  dp: number[][]
+) => boolean = (row, col, matrix, vis, prev, dp) => {
+  const m = matrix.length;
+  const n = matrix[0].length;
+
+  if (row < 0 || row >= m || col < 0 || col >= n || vis[row][col]) return false;
+
+  if (dp[row][col] !== -1) return dp[row][col] === 1;
+
+  if (matrix[row][col] === prev) return true;
+
+  vis[row][col] = 1;
+
+  let ans = false;
+
+  for (let i = 0; i < 4; i++) {
+    const nrow = row + delrow[i];
+    const ncol = col + delcol[i];
+
+    ans = ans || isMergePossible(nrow, ncol, matrix, vis, matrix[row][col], dp);
+  }
+
+  dp[row][col] = ans ? 1 : 0;
+  return ans;
+};
+
+export const isEndOfGame: (matrix: number[][]) => boolean = (matrix) => {
+  // it will be the end of game if two conditions are met, 1. no more possible slides and 2. no more empty slots to generate 0
+  // for first condition let's run a dfs, if some adjacent element of matrix is same then return false
+  const m = matrix.length;
+  const n = matrix[0].length;
+
+  const vis = new Array(m).fill(null).map(() => new Array(n).fill(0));
+  const dp = new Array(m + 1).fill(null).map(() => new Array(n + 1).fill(-1));
+
+  const isMergable = isMergePossible(0, 0, matrix, vis, -1, dp);
+
+  const hasEmptySlots = matrix.flat().some((ele) => ele === 0);
+
+  return !isMergable && !hasEmptySlots;
+};
+
 export const generateNewTile: (
   x: number,
   y: number,
@@ -47,13 +98,15 @@ export const generateNewTile: (
   const emptySlots: coordinates[] = [];
   let coordArr: coordinates[] = [[-1, -1]];
 
+  if (isEndOfGame(matrix)) return [false, matrix, coordArr];
+
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < columns; j++) {
       if (matrix[i][j] === 0) emptySlots.push([i, j]);
     }
   }
 
-  if (emptySlots.length === 0) return [false, matrix, coordArr];
+  if (emptySlots.length === 0) return [true, matrix, coordArr];
 
   //   select random coordinate from empty slots
   const index = Math.floor(Math.random() * emptySlots.length);

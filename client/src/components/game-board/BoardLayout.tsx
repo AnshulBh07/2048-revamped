@@ -9,10 +9,20 @@ import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store";
 import { useDispatch } from "react-redux";
 import { generateStartMatrix } from "../../services/helperFunctions";
+import GameOverModal from "./GameOverModal";
 
 function BoardLayout() {
-  const { rows, columns, scoreAnimate, currScore, maxScore, tileWidth } =
-    useSelector((state: RootState) => state.game);
+  const {
+    rows,
+    columns,
+    scoreAnimate,
+    status,
+    currScore,
+    maxScore,
+    tileWidth,
+    prevMatrix,
+    gap,
+  } = useSelector((state: RootState) => state.game);
   const dispatch: AppDispatch = useDispatch();
 
   // we will use a useEffect hook to set the initial state of the matrix for game, this happens
@@ -43,11 +53,11 @@ function BoardLayout() {
     dispatch({ type: "game/set_matrix", payload: fnValue[0] });
     dispatch({ type: "game/set_new_tile_coords", payload: fnValue[1] });
     dispatch({ type: "game/set_tileWidth", payload: tileWidth });
-    dispatch({ type: "game/set_gap", payload: 0.5 });
+    dispatch({ type: "game/set_gap", payload: gap });
   };
 
   const handleUndoClick = () => {
-    dispatch({ type: "game/set_undo", payload: true });
+    dispatch({ type: "game/set_matrix", payload: prevMatrix });
   };
 
   useEffect(() => {
@@ -56,47 +66,51 @@ function BoardLayout() {
   }, [dispatch]);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.game_title}>
-        <h1 className={styles.title1}>2048</h1>
-        <div className={styles.score_cards_wrapper}>
-          {/* score animation card */}
-          <div className={styles.score_dummy}>
-            {scoreAnimate && (
-              <div className={styles.score_animation}>+{currScore}</div>
-            )}
+    <React.Fragment>
+      <div className={styles.container}>
+        <div className={styles.game_title}>
+          <h1 className={styles.title1}>2048</h1>
+          <div className={styles.score_cards_wrapper}>
+            {/* score animation card */}
+            <div className={styles.score_dummy}>
+              {scoreAnimate && (
+                <div className={styles.score_animation}>+{currScore}</div>
+              )}
+            </div>
+            <ScoreTile title="Score" score={maxScore} />
+            <ScoreTile title="Best" score={0} />
           </div>
-          <ScoreTile title="Score" score={maxScore} />
-          <ScoreTile title="Best" score={0} />
         </div>
+
+        <div className={styles.description}>
+          <p style={{ fontWeight: "600" }}>Play 2048 game online</p>
+          <p>
+            Join the numbers and get to the{" "}
+            <span style={{ fontWeight: "600" }}>2048 tile!</span>
+          </p>
+        </div>
+
+        <div className={styles.buttons_wrapper}>
+          <button className={styles.option_btn} style={{ marginRight: "auto" }}>
+            <HiMiniHome className={styles.icon} />
+          </button>
+          <button className={styles.option_btn} onClick={handleUndoClick}>
+            <FaUndoAlt className={styles.icon} />
+          </button>
+          <button className={styles.option_btn} onClick={handleRestartClick}>
+            <MdOutlineRestartAlt
+              className={styles.icon}
+              style={{ height: "3.3rem", width: "3.3rem" }}
+            />
+          </button>
+        </div>
+
+        {/* Game Board */}
+        <GameBoard />
       </div>
 
-      <div className={styles.description}>
-        <p style={{ fontWeight: "600" }}>Play 2048 game online</p>
-        <p>
-          Join the numbers and get to the{" "}
-          <span style={{ fontWeight: "600" }}>2048 tile!</span>
-        </p>
-      </div>
-
-      <div className={styles.buttons_wrapper}>
-        <button className={styles.option_btn} style={{ marginRight: "auto" }}>
-          <HiMiniHome className={styles.icon} />
-        </button>
-        <button className={styles.option_btn} onClick={handleUndoClick}>
-          <FaUndoAlt className={styles.icon} />
-        </button>
-        <button className={styles.option_btn} onClick={handleRestartClick}>
-          <MdOutlineRestartAlt
-            className={styles.icon}
-            style={{ height: "3.3rem", width: "3.3rem" }}
-          />
-        </button>
-      </div>
-
-      {/* Game Board */}
-      <GameBoard />
-    </div>
+      {status.includes("game over") && <GameOverModal />}
+    </React.Fragment>
   );
 }
 
