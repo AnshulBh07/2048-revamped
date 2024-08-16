@@ -11,9 +11,11 @@ const initialState: IGameState = {
   rows: 4,
   columns: 4,
   undo: true,
+  slide: false,
   scoreAnimate: false,
   tileWidth: 0,
   newTileCoords: [],
+  mergeTileCoords: [],
   gap: 0,
 };
 
@@ -48,6 +50,12 @@ export const gameReducer = (state = initialState, action: actionType) => {
       return { ...state, gap: action.payload as number };
     case "game/set_positions":
       return { ...state, positionsArr: action.payload as position[] };
+    case "game/set_status":
+      return { ...state, status: action.payload as string };
+    case "game/set_merge_tile_coords":
+      return { ...state, mergeTileCoords: action.payload as coordsMatrix };
+    case "game/set_slide":
+      return { ...state, slide: action.payload as boolean };
     case "game/reset":
       return initialState;
     default:
