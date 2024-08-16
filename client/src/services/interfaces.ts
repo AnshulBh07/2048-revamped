@@ -17,8 +17,10 @@ export interface IGameState {
   columns: number;
   undo: boolean;
   scoreAnimate: boolean;
+  slide: boolean;
   tileWidth: number;
   gap: number;
   newTileCoords: coordinates[];
+  mergeTileCoords: coordinates[];
   positionsArr: position[]; //matrix that stores the initial and final position of each ele along with value
 }

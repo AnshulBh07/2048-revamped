@@ -67,3 +67,41 @@ export const generateNewTile: (
 
   return [true, newMatrix, coordArr];
 };
+
+// function that decides value of bg color and number color based on value
+export const decideColorFn: (x: number | null) => [string, string] = (
+  value
+) => {
+  switch (value) {
+    case null:
+      return ["#cdc1b4", ""];
+    case 2:
+      return ["#eee4da", "#776e65"];
+    case 4:
+      return ["#ede0c8", "#776e65"];
+    case 8:
+      return ["#f2b179", "#f9f6f2"];
+    case 16:
+      return ["#f59563", "#f9f6f2"];
+    case 32:
+      return ["#f67c5f", "#f9f6f2"];
+    case 64:
+      return ["#f65e3b", "#f9f6f2"];
+    case 128:
+      return ["#edcf72", "#f9f6f2"];
+    case 256:
+      return ["#edcc61", "#f9f6f2"];
+    case 512:
+      return ["#edc850", "#f9f6f2"];
+    case 1024:
+      return ["#edc53f", "#f9f6f2"];
+    case 2048:
+      return ["#edc22e", "#f9f6f2"];
+    case 4096:
+      return ["#edc22e", "#f9f6f2"];
+    case 8192:
+      return ["#edc22e", "#f9f6f2"];
+    default:
+      return ["#cdc1b4", ""];
+  }
+};
