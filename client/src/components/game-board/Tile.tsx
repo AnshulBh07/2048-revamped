@@ -11,7 +11,7 @@ interface IProps {
 }
 
 export const Tile: React.FC<IProps> = ({ value, x, y }) => {
-  const { tileWidth, newTileCoords } = useSelector(
+  const { tileWidth, newTileCoords, positionsArr } = useSelector(
     (state: RootState) => state.game
   );
 
@@ -19,9 +19,20 @@ export const Tile: React.FC<IProps> = ({ value, x, y }) => {
     return newTileCoords.some((coord) => coord[0] === x && coord[1] === y);
   };
 
+  const isMergedTile = () => {
+    return positionsArr.some(
+      (pos) =>
+        pos.finalCoords.row === x &&
+        pos.finalCoords.column === y &&
+        pos.isMerged
+    );
+  };
+
   return (
     <div
-      className={`${styles.tile} ${isNewTile() ? styles.animate : ""}`}
+      className={`${styles.tile} ${isNewTile() ? styles.animate : ""} ${
+        isMergedTile() ? styles.merge_animate : ""
+      }`}
       style={{
         backgroundColor: `${decideColorFn(value)[0]}`,
         color: `${decideColorFn(value)[1]}`,

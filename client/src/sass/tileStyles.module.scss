@@ -16,9 +16,25 @@
   animation: newTileAppear 0.15s ease-in-out;
 }
 
+.merge_animate {
+  animation: mergeTileAnimate 0.15s ease-in-out;
+}
+
 @keyframes newTileAppear {
   0% {
     transform: scale(0.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes mergeTileAnimate {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
   }
   100% {
     transform: scale(1);

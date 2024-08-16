@@ -27,7 +27,9 @@ function GameBoard() {
     let moveScore = 0;
 
     // calculate new matrix after the action is performed
+    dispatch({ type: "game/set_prev", payload: matrix });
     const currMatrix = matrix.map((row) => [...row]);
+    const prevMatrix = matrix.map((row) => [...row]);
     const positionArr: position[] = [];
 
     // ALGORITHM FOR EACH MOVE IS
@@ -47,6 +49,7 @@ function GameBoard() {
 
         if (currMatrix[i][j] !== 0) {
           positionArr.push({
+            isMerged: false,
             value: currMatrix[i][j],
             initialCoords: { row: i, column: j },
             finalCoords: { row: i - prefixSum, column: j },
@@ -67,7 +70,10 @@ function GameBoard() {
               ele.initialCoords.column === j && ele.finalCoords.row === k + 1
           );
 
-          if (idx !== -1) positionArr[idx].finalCoords.row = k;
+          if (idx !== -1) {
+            positionArr[idx].finalCoords.row = k;
+            positionArr[idx].isMerged = true;
+          }
         }
       }
 
@@ -96,6 +102,14 @@ function GameBoard() {
       }
     }
 
+    // if curr matrix is same as prev matrix then do nothing and return
+    if (
+      prevMatrix.every((row, i) =>
+        row.every((ele, j) => ele === currMatrix[i][j])
+      )
+    )
+      return;
+
     const ansTuple = generateNewTile(rows, columns, currMatrix);
 
     if (!ansTuple[0]) {
@@ -123,6 +137,8 @@ function GameBoard() {
     let moveScore = 0;
 
     const currMatrix = matrix.map((row) => [...row]);
+    dispatch({ type: "game/set_prev", payload: matrix });
+    const prevMatrix = matrix.map((row) => [...row]);
     const positionArr: position[] = [];
 
     for (let j = 0; j < columns; j++) {
@@ -138,6 +154,7 @@ function GameBoard() {
 
         if (currMatrix[i][j] !== 0) {
           positionArr.push({
+            isMerged: false,
             value: currMatrix[i][j],
             initialCoords: { row: i, column: j },
             finalCoords: { row: i + prefixSum, column: j },
@@ -163,7 +180,10 @@ function GameBoard() {
               ele.initialCoords.column === j && ele.finalCoords.row === k - 1
           );
 
-          if (idx !== -1) positionArr[idx].finalCoords.row = k;
+          if (idx !== -1) {
+            positionArr[idx].finalCoords.row = k;
+            positionArr[idx].isMerged = true;
+          }
         }
       }
 
@@ -193,6 +213,14 @@ function GameBoard() {
       }
     }
 
+    // if curr matrix is same as prev matrix then do nothing and return
+    if (
+      prevMatrix.every((row, i) =>
+        row.every((ele, j) => ele === currMatrix[i][j])
+      )
+    )
+      return;
+
     const ansTuple = generateNewTile(rows, columns, currMatrix);
 
     if (!ansTuple[0]) {
@@ -220,6 +248,9 @@ function GameBoard() {
     let moveScore = 0;
 
     const currMatrix = matrix.map((row) => [...row]);
+    const prevMatrix = matrix.map((row) => [...row]);
+    dispatch({ type: "game/set_prev", payload: matrix });
+
     const positionArr: position[] = [];
 
     for (let i = 0; i < rows; i++) {
@@ -236,6 +267,7 @@ function GameBoard() {
 
         if (currMatrix[i][j] !== 0) {
           positionArr.push({
+            isMerged: false,
             value: currMatrix[i][j],
             initialCoords: { row: i, column: j },
             finalCoords: { row: i, column: j + prefixSum },
@@ -261,7 +293,10 @@ function GameBoard() {
               ele.initialCoords.row === i && ele.finalCoords.column === k - 1
           );
 
-          if (idx !== -1) positionArr[idx].finalCoords.column = k;
+          if (idx !== -1) {
+            positionArr[idx].finalCoords.column = k;
+            positionArr[idx].isMerged = true;
+          }
         }
       }
 
@@ -286,6 +321,14 @@ function GameBoard() {
 
       for (let j = 0; j < columns; j++) currMatrix[i][j] = arr[j];
     }
+
+    // if curr matrix is same as prev matrix then do nothing and return
+    if (
+      prevMatrix.every((row, i) =>
+        row.every((ele, j) => ele === currMatrix[i][j])
+      )
+    )
+      return;
 
     const ansTuple = generateNewTile(rows, columns, currMatrix);
 
@@ -314,6 +357,8 @@ function GameBoard() {
     let moveScore = 0;
 
     const currMatrix = matrix.map((row) => [...row]);
+    const prevMatrix = matrix.map((row) => [...row]);
+    dispatch({ type: "game/set_prev", payload: matrix });
 
     const positionArr: position[] = [];
 
@@ -330,6 +375,7 @@ function GameBoard() {
 
         if (currMatrix[i][j] !== 0) {
           positionArr.push({
+            isMerged: false,
             value: currMatrix[i][j],
             initialCoords: { row: i, column: j },
             finalCoords: { row: i, column: j - prefixSum },
@@ -350,7 +396,10 @@ function GameBoard() {
               ele.initialCoords.row === i && ele.finalCoords.column === k + 1
           );
 
-          if (idx !== -1) positionArr[idx].finalCoords.column = k;
+          if (idx !== -1) {
+            positionArr[idx].finalCoords.column = k;
+            positionArr[idx].isMerged = true;
+          }
 
           moveScore += arr[k];
         }
@@ -377,6 +426,14 @@ function GameBoard() {
 
       for (let j = 0; j < columns; j++) currMatrix[i][j] = arr[j];
     }
+
+    // if curr matrix is same as prev matrix then do nothing and return
+    if (
+      prevMatrix.every((row, i) =>
+        row.every((ele, j) => ele === currMatrix[i][j])
+      )
+    )
+      return;
 
     const ansTuple = generateNewTile(rows, columns, currMatrix);
 

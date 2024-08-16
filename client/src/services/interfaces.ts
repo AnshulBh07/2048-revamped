@@ -1,6 +1,7 @@
 export type coordinates = [number, number];
 
 export type position = {
+  isMerged: boolean;
   value: number;
   initialCoords: { row: number; column: number };
   finalCoords: { row: number; column: number };
