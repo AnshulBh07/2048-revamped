@@ -3,7 +3,7 @@ import styles from "../../sass/gameBoardStyles.module.scss";
 import Tile from "./Tile";
 import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store";
-import { generateNewTile } from "../../services/helperFunctions";
+import { generateNewTile, isEndOfGame } from "../../services/helperFunctions";
 import { useDispatch } from "react-redux";
 import { position } from "../../services/interfaces";
 import SlideTile from "./SlideTile";
@@ -31,6 +31,12 @@ function GameBoard() {
     const currMatrix = matrix.map((row) => [...row]);
     const prevMatrix = matrix.map((row) => [...row]);
     const positionArr: position[] = [];
+
+    if (isEndOfGame(currMatrix)) {
+      // set game over
+      dispatch({ type: "game/set_status", payload: "game over" });
+      return;
+    }
 
     // ALGORITHM FOR EACH MOVE IS
     // 1. clear zeroes
@@ -112,12 +118,6 @@ function GameBoard() {
 
     const ansTuple = generateNewTile(rows, columns, currMatrix);
 
-    if (!ansTuple[0]) {
-      // set game over
-      dispatch({ type: "game/set_status", payload: "game over" });
-      return;
-    }
-
     dispatch({ type: "game/set_slide", payload: true });
 
     setTimeout(() => {
@@ -140,6 +140,12 @@ function GameBoard() {
     dispatch({ type: "game/set_prev", payload: matrix });
     const prevMatrix = matrix.map((row) => [...row]);
     const positionArr: position[] = [];
+
+    if (isEndOfGame(currMatrix)) {
+      // set game over
+      dispatch({ type: "game/set_status", payload: "game over" });
+      return;
+    }
 
     for (let j = 0; j < columns; j++) {
       let arr = [];
@@ -223,12 +229,6 @@ function GameBoard() {
 
     const ansTuple = generateNewTile(rows, columns, currMatrix);
 
-    if (!ansTuple[0]) {
-      // set game over
-      dispatch({ type: "game/set_status", payload: "game over" });
-      return;
-    }
-
     dispatch({ type: "game/set_slide", payload: true });
 
     setTimeout(() => {
@@ -250,6 +250,12 @@ function GameBoard() {
     const currMatrix = matrix.map((row) => [...row]);
     const prevMatrix = matrix.map((row) => [...row]);
     dispatch({ type: "game/set_prev", payload: matrix });
+
+    if (isEndOfGame(currMatrix)) {
+      // set game over
+      dispatch({ type: "game/set_status", payload: "game over" });
+      return;
+    }
 
     const positionArr: position[] = [];
 
@@ -332,12 +338,6 @@ function GameBoard() {
 
     const ansTuple = generateNewTile(rows, columns, currMatrix);
 
-    if (!ansTuple[0]) {
-      // set game over
-      dispatch({ type: "game/set_status", payload: "game over" });
-      return;
-    }
-
     dispatch({ type: "game/set_slide", payload: true });
 
     setTimeout(() => {
@@ -359,6 +359,12 @@ function GameBoard() {
     const currMatrix = matrix.map((row) => [...row]);
     const prevMatrix = matrix.map((row) => [...row]);
     dispatch({ type: "game/set_prev", payload: matrix });
+
+    if (isEndOfGame(currMatrix)) {
+      // set game over
+      dispatch({ type: "game/set_status", payload: "game over" });
+      return;
+    }
 
     const positionArr: position[] = [];
 
@@ -436,12 +442,6 @@ function GameBoard() {
       return;
 
     const ansTuple = generateNewTile(rows, columns, currMatrix);
-
-    if (!ansTuple[0]) {
-      // set game over
-      dispatch({ type: "game/set_status", payload: "game over" });
-      return;
-    }
 
     dispatch({ type: "game/set_slide", payload: true });
 
