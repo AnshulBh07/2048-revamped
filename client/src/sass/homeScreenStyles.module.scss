@@ -11,6 +11,7 @@
     grid-template-rows: repeat(2, auto);
     gap: 3rem;
     width: auto;
+    margin-top: 3rem;
 
     .radio_label {
       @include flexProp(column, 1rem, flex-start, center);
@@ -85,6 +86,7 @@
   .container {
     width: 100%;
     padding: 1rem;
+    margin-top: 2rem;
 
     .radio_group {
       gap: 2rem;

@@ -508,6 +508,58 @@ function GameBoard() {
       );
   }, [handleKeyUP, handleKeyDOWN, handleKeyLEFT, handleKeyRIGHT]);
 
+  // useEffect that adds swipe functionality
+  useEffect(() => {
+    let touchStartX = 0,
+      touchStartY = 0,
+      touchEndX = 0,
+      touchEndY = 0;
+    const handleTouchStart = (e: TouchEvent) => {
+      const { touches } = e;
+
+      touchStartX = touches[0].clientX;
+      touchStartY = touches[0].clientY;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      const { touches } = e;
+
+      touchEndX = touches[0].clientX;
+      touchEndY = touches[0].clientY;
+    };
+
+    const handleTouchEnd = () => {
+      const deltaX = touchEndX - touchStartX;
+      const deltaY = touchEndY - touchStartY;
+
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        // it is horizontal movement
+        if (deltaX > 0) {
+          handleKeyRIGHT();
+        } else {
+          handleKeyLEFT();
+        }
+      } else {
+        // it is vertical movement
+        if (deltaY > 0) {
+          handleKeyDOWN();
+        } else {
+          handleKeyUP();
+        }
+      }
+    };
+
+    document.addEventListener("touchstart", handleTouchStart);
+    document.addEventListener("touchmove", handleTouchMove);
+    document.addEventListener("touchend", handleTouchEnd);
+
+    return () => {
+      document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [handleKeyDOWN, handleKeyLEFT, handleKeyRIGHT, handleKeyUP]);
+
   const fnValues = calculateValues(tileWidth, gap, font_size, screen);
 
   const containerWidth = fnValues[0] * rows + fnValues[1] * (rows + 1);
