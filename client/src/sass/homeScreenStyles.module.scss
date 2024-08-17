@@ -1,0 +1,97 @@
+@import "./mixins.scss";
+@import "./variables.scss";
+
+.container {
+  @include flexProp(column, 3rem, flex-start, center);
+  width: 50%;
+
+  .radio_group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 3rem;
+    width: auto;
+
+    .radio_label {
+      @include flexProp(column, 1rem, flex-start, center);
+      cursor: pointer;
+      position: relative;
+      width: 12rem;
+      border-radius: 3px;
+      overflow: hidden;
+      z-index: 1;
+
+      .option_text {
+        position: inherit;
+        font-size: 1.5rem;
+        z-index: 1;
+        font-weight: 600;
+        color: $text1;
+      }
+
+      input[type="radio"] {
+        display: none;
+      }
+
+      .option_img {
+        max-width: 100%;
+      }
+
+      .option_overlay {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        background-color: rgba($color: #fff, $alpha: 0.4);
+        transition: background-color 0.2s ease-in-out;
+      }
+
+      .select {
+        background-color: rgba($color: #fff, $alpha: 0);
+      }
+    }
+  }
+
+  .btns_group {
+    @include flexProp(row, 1rem, center, center);
+
+    .trophy_btn,
+    .start_btn,
+    .guide_btn {
+      @include ButtonProp;
+      width: auto;
+      padding: 1rem;
+
+      .icon {
+        height: 1.8rem;
+        width: 1.8rem;
+      }
+    }
+
+    .start_btn {
+      background-color: $number64bg;
+
+      .icon {
+        height: 2.5rem;
+        width: 2.5rem;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 22.5rem) {
+  .container {
+    width: 100%;
+    padding: 1rem;
+
+    .radio_group {
+      gap: 2rem;
+
+      .radio_label {
+        width: 8rem;
+      }
+    }
+  }
+}

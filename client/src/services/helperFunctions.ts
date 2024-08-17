@@ -1,4 +1,4 @@
-import { coordinates } from "./interfaces";
+import { coordinates, IGameState } from "./interfaces";
 
 export const generateStartMatrix: (
   x: number,
@@ -164,5 +164,81 @@ export const decideColorFn: (x: number | null) => [string, string] = (
       return ["#edc22e", "#f9f6f2"];
     default:
       return ["#cdc1b4", ""];
+  }
+};
+
+export const calculateGameState: (
+  state: IGameState,
+  type: string
+) => IGameState = (state, type) => {
+  switch (type) {
+    case "4x4":
+      return {
+        ...state,
+        rows: 4,
+        columns: 4,
+        gap: 0.5,
+        tileWidth: 6.5,
+        font_size: 2.5,
+        prevMatrix: new Array(4).fill(null).map(() => new Array(4).fill(0)),
+        matrix: new Array(4).fill(null).map(() => new Array(4).fill(0)),
+      };
+    case "5x5":
+      return {
+        ...state,
+        rows: 5,
+        columns: 5,
+        gap: 0.4,
+        tileWidth: 5.2,
+        font_size: 2,
+        prevMatrix: new Array(5).fill(null).map(() => new Array(5).fill(0)),
+        matrix: new Array(5).fill(null).map(() => new Array(5).fill(0)),
+      };
+    case "6x6":
+      return {
+        ...state,
+        rows: 6,
+        columns: 6,
+        gap: 0.4,
+        tileWidth: 4.3,
+        font_size: 1.75,
+        prevMatrix: new Array(6).fill(null).map(() => new Array(6).fill(0)),
+        matrix: new Array(6).fill(null).map(() => new Array(6).fill(0)),
+      };
+    case "8x8":
+      return {
+        ...state,
+        rows: 8,
+        columns: 8,
+        gap: 0.25,
+        tileWidth: 3.25,
+        font_size: 1.25,
+        prevMatrix: new Array(8).fill(null).map(() => new Array(8).fill(0)),
+        matrix: new Array(8).fill(null).map(() => new Array(8).fill(0)),
+      };
+    default:
+      return state;
+  }
+};
+
+export const hasWon: (matrix: number[][]) => boolean = (matrix) => {
+  return matrix.flat().some((value) => value === 2048);
+};
+
+export const calculateValues: (
+  a: number,
+  b: number,
+  c: number,
+  d: string
+) => [number, number, number] = (tileWidth, gap, font_size, screen) => {
+  switch (screen) {
+    case "mobile":
+      return [
+        tileWidth - (tileWidth * 30) / 100,
+        gap - (gap * 30) / 100,
+        font_size - (font_size * 30) / 100,
+      ];
+    default:
+      return [tileWidth, gap, font_size];
   }
 };

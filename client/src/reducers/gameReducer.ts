@@ -1,3 +1,4 @@
+import { calculateGameState } from "../services/helperFunctions";
 import { coordinates, IGameState, position } from "../services/interfaces";
 
 const initialState: IGameState = {
@@ -13,10 +14,12 @@ const initialState: IGameState = {
   undo: true,
   slide: false,
   scoreAnimate: false,
-  tileWidth: 0,
+  screen: "desktop",
+  tileWidth: 6.5,
   newTileCoords: [],
   mergeTileCoords: [],
-  gap: 0,
+  gap: 0.5,
+  font_size: 2.5,
 };
 
 type matrixType = number[][];
@@ -42,12 +45,8 @@ export const gameReducer = (state = initialState, action: actionType) => {
       return { ...state, currScore: action.payload as number };
     case "game/set_maxScore":
       return { ...state, maxScore: action.payload as number };
-    case "game/set_tileWidth":
-      return { ...state, tileWidth: action.payload as number };
     case "game/set_new_tile_coords":
       return { ...state, newTileCoords: action.payload as coordsMatrix };
-    case "game/set_gap":
-      return { ...state, gap: action.payload as number };
     case "game/set_positions":
       return { ...state, positionsArr: action.payload as position[] };
     case "game/set_status":
@@ -56,8 +55,17 @@ export const gameReducer = (state = initialState, action: actionType) => {
       return { ...state, mergeTileCoords: action.payload as coordsMatrix };
     case "game/set_slide":
       return { ...state, slide: action.payload as boolean };
+    case "game/set_tileWidth":
+      console.log("setting tile width");
+      return { ...state, tileWidth: action.payload as number };
+    case "game/set_gap":
+      return { ...state, gap: action.payload as number };
+    case "game/set_screen":
+      return { ...state, screen: action.payload as string };
+    case "game/set_game":
+      return calculateGameState(state, action.payload as string);
     case "game/reset":
-      return initialState;
+      return { ...state };
     default:
       return state;
   }

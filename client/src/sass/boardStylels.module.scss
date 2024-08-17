@@ -62,3 +62,24 @@
     transform: translateY(-1.5rem);
   }
 }
+
+@media screen and (max-width: 22.5rem) {
+  .container {
+    width: 100%;
+    padding: 1rem;
+
+    .game_title {
+      .title1 {
+        font-size: 3rem;
+      }
+    }
+
+    .description {
+      font-size: 1rem;
+    }
+
+    .buttons_wrapper {
+      margin-top: 2rem;
+    }
+  }
+}

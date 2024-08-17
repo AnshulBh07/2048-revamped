@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "../../sass/slideTileStyles.module.scss";
-import { decideColorFn } from "../../services/helperFunctions";
+import { calculateValues, decideColorFn } from "../../services/helperFunctions";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { position } from "../../services/interfaces";
@@ -15,7 +15,14 @@ type TilePosition = {
 };
 
 export const SlideTile: React.FC<IProps> = ({ position }) => {
-  const { tileWidth, gap } = useSelector((state: RootState) => state.game);
+  const { tileWidth, gap, font_size, screen } = useSelector(
+    (state: RootState) => state.game
+  );
+
+  const fnValues = useMemo(
+    () => calculateValues(tileWidth, gap, font_size, screen),
+    [tileWidth, gap, font_size, screen]
+  );
 
   const calculateTilePos: (coords: {
     row: number;
@@ -23,11 +30,11 @@ export const SlideTile: React.FC<IProps> = ({ position }) => {
   }) => TilePosition = useCallback(
     (coords) => {
       return {
-        top: gap + coords.row * (tileWidth + gap),
-        left: gap + coords.column * (tileWidth + gap),
+        top: fnValues[1] + coords.row * (fnValues[0] + fnValues[1]),
+        left: fnValues[1] + coords.column * (fnValues[0] + fnValues[1]),
       };
     },
-    [gap, tileWidth]
+    [fnValues]
   );
 
   const [tilePos, setTilePos] = useState<TilePosition>(
@@ -46,10 +53,11 @@ export const SlideTile: React.FC<IProps> = ({ position }) => {
       style={{
         backgroundColor: `${decideColorFn(position.value)[0]}`,
         color: `${decideColorFn(position.value)[1]}`,
-        height: `${tileWidth}rem`,
-        width: `${tileWidth}rem`,
+        height: `${fnValues[0]}rem`,
+        width: `${fnValues[0]}rem`,
         top: `${tilePos.top}rem`,
         left: `${tilePos.left}rem`,
+        fontSize: `${fnValues[2]}rem`,
       }}
     >
       {position.value}

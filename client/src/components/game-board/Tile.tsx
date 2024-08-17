@@ -2,7 +2,7 @@ import React from "react";
 import styles from "../../sass/tileStyles.module.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { decideColorFn } from "../../services/helperFunctions";
+import { calculateValues, decideColorFn } from "../../services/helperFunctions";
 
 interface IProps {
   value: number | null;
@@ -11,9 +11,8 @@ interface IProps {
 }
 
 export const Tile: React.FC<IProps> = ({ value, x, y }) => {
-  const { tileWidth, newTileCoords, positionsArr } = useSelector(
-    (state: RootState) => state.game
-  );
+  const { tileWidth, newTileCoords, positionsArr, font_size, gap, screen } =
+    useSelector((state: RootState) => state.game);
 
   const isNewTile = () => {
     return newTileCoords.some((coord) => coord[0] === x && coord[1] === y);
@@ -28,6 +27,8 @@ export const Tile: React.FC<IProps> = ({ value, x, y }) => {
     );
   };
 
+  const fnValues = calculateValues(tileWidth, gap, font_size, screen);
+
   return (
     <div
       className={`${styles.tile} ${isNewTile() ? styles.animate : ""} ${
@@ -36,8 +37,9 @@ export const Tile: React.FC<IProps> = ({ value, x, y }) => {
       style={{
         backgroundColor: `${decideColorFn(value)[0]}`,
         color: `${decideColorFn(value)[1]}`,
-        height: `${tileWidth}rem`,
-        width: `${tileWidth}rem`,
+        height: `${fnValues[0]}rem`,
+        width: `${fnValues[0]}rem`,
+        fontSize: `${fnValues[2]}rem`,
       }}
     >
       {value}

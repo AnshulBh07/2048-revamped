@@ -10,6 +10,7 @@ import { AppDispatch, RootState } from "../../store";
 import { useDispatch } from "react-redux";
 import { generateStartMatrix } from "../../services/helperFunctions";
 import GameOverModal from "./GameOverModal";
+import GameWinModal from "./GameWinModal";
 
 function BoardLayout() {
   const {
@@ -19,9 +20,7 @@ function BoardLayout() {
     status,
     currScore,
     maxScore,
-    tileWidth,
     prevMatrix,
-    gap,
   } = useSelector((state: RootState) => state.game);
   const dispatch: AppDispatch = useDispatch();
 
@@ -52,17 +51,37 @@ function BoardLayout() {
     const fnValue = generateStartMatrix(rows, columns);
     dispatch({ type: "game/set_matrix", payload: fnValue[0] });
     dispatch({ type: "game/set_new_tile_coords", payload: fnValue[1] });
-    dispatch({ type: "game/set_tileWidth", payload: tileWidth });
-    dispatch({ type: "game/set_gap", payload: gap });
   };
 
   const handleUndoClick = () => {
     dispatch({ type: "game/set_matrix", payload: prevMatrix });
   };
 
+  const handleHomeClick = () => {
+    dispatch({ type: "game/reset" });
+    dispatch({ type: "game/set_status", payload: "not started" });
+  };
+
   useEffect(() => {
-    dispatch({ type: "game/set_tileWidth", payload: 6.5 });
-    dispatch({ type: "game/set_gap", payload: 0.5 });
+    if (window.innerWidth <= 400) {
+      dispatch({ type: "game/set_screen", payload: "mobile" });
+    } else {
+      dispatch({ type: "game/set_screen", payload: "desktop" });
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 400) {
+        dispatch({ type: "game/set_screen", payload: "mobile" });
+      } else {
+        dispatch({ type: "game/set_screen", payload: "desktop" });
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
   }, [dispatch]);
 
   return (
@@ -91,7 +110,11 @@ function BoardLayout() {
         </div>
 
         <div className={styles.buttons_wrapper}>
-          <button className={styles.option_btn} style={{ marginRight: "auto" }}>
+          <button
+            className={styles.option_btn}
+            style={{ marginRight: "auto" }}
+            onClick={handleHomeClick}
+          >
             <HiMiniHome className={styles.icon} />
           </button>
           <button className={styles.option_btn} onClick={handleUndoClick}>
@@ -109,7 +132,9 @@ function BoardLayout() {
         <GameBoard />
       </div>
 
-      {status.includes("game over") && <GameOverModal />}
+      {status.includes("over") && <GameOverModal />}
+
+      {status.includes("win") && <GameWinModal />}
     </React.Fragment>
   );
 }
