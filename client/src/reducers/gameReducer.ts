@@ -65,7 +65,7 @@ export const gameReducer = (state = initialState, action: actionType) => {
     case "game/set_game":
       return calculateGameState(state, action.payload as string);
     case "game/reset":
-      return { ...state };
+      return initialState;
     default:
       return state;
   }
