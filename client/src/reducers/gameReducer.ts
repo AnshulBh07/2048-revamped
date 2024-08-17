@@ -15,10 +15,10 @@ const initialState: IGameState = {
   slide: false,
   scoreAnimate: false,
   screen: "desktop",
-  tileWidth: 0,
+  tileWidth: 6.5,
   newTileCoords: [],
   mergeTileCoords: [],
-  gap: 0,
+  gap: 0.5,
   font_size: 2.5,
 };
 
@@ -65,7 +65,7 @@ export const gameReducer = (state = initialState, action: actionType) => {
     case "game/set_game":
       return calculateGameState(state, action.payload as string);
     case "game/reset":
-      return initialState;
+      return { ...state };
     default:
       return state;
   }
