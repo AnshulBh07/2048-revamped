@@ -555,8 +555,10 @@ function GameBoard() {
       }
     };
 
-    document.addEventListener("touchstart", handleTouchStart);
-    document.addEventListener("touchmove", handleTouchMove);
+    document.addEventListener("touchstart", handleTouchStart, {
+      passive: false,
+    });
+    document.addEventListener("touchmove", handleTouchMove, { passive: false });
     document.addEventListener("touchend", handleTouchEnd);
 
     return () => {
