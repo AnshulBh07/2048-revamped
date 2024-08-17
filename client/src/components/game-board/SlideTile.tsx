@@ -15,7 +15,9 @@ type TilePosition = {
 };
 
 export const SlideTile: React.FC<IProps> = ({ position }) => {
-  const { tileWidth, gap } = useSelector((state: RootState) => state.game);
+  const { tileWidth, gap, font_size } = useSelector(
+    (state: RootState) => state.game
+  );
 
   const calculateTilePos: (coords: {
     row: number;
@@ -50,6 +52,7 @@ export const SlideTile: React.FC<IProps> = ({ position }) => {
         width: `${tileWidth}rem`,
         top: `${tilePos.top}rem`,
         left: `${tilePos.left}rem`,
+        fontSize: `${font_size}rem`,
       }}
     >
       {position.value}

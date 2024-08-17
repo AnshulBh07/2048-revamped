@@ -11,7 +11,7 @@ interface IProps {
 }
 
 export const Tile: React.FC<IProps> = ({ value, x, y }) => {
-  const { tileWidth, newTileCoords, positionsArr } = useSelector(
+  const { tileWidth, newTileCoords, positionsArr, font_size } = useSelector(
     (state: RootState) => state.game
   );
 
@@ -38,6 +38,7 @@ export const Tile: React.FC<IProps> = ({ value, x, y }) => {
         color: `${decideColorFn(value)[1]}`,
         height: `${tileWidth}rem`,
         width: `${tileWidth}rem`,
+        fontSize: `${font_size}rem`,
       }}
     >
       {value}

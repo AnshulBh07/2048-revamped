@@ -60,11 +60,6 @@ function BoardLayout() {
     dispatch({ type: "game/set_matrix", payload: prevMatrix });
   };
 
-  useEffect(() => {
-    dispatch({ type: "game/set_tileWidth", payload: 6.5 });
-    dispatch({ type: "game/set_gap", payload: 0.5 });
-  }, [dispatch]);
-
   return (
     <React.Fragment>
       <div className={styles.container}>

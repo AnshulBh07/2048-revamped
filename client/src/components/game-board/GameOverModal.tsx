@@ -8,6 +8,7 @@ export const GameOverModal = () => {
   const { maxScore, rows, columns, tileWidth, gap } = useSelector(
     (state: RootState) => state.game
   );
+
   const dispatch: AppDispatch = useDispatch();
 
   const handleTryAgainClick = () => {
