@@ -14,4 +14,24 @@
   font-family: "poppins", sans-serif;
   position: relative;
   width: 100vw;
+  overflow-x: hidden;
+
+  .confetti_container {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+
+    .confetti1,
+    .confetti2 {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .confetti2 {
+      left: 100%;
+    }
+  }
 }

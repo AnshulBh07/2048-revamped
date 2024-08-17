@@ -80,3 +80,18 @@
     }
   }
 }
+
+@media screen and (max-width: 22.5rem) {
+  .container {
+    width: 100%;
+    padding: 1rem;
+
+    .radio_group {
+      gap: 2rem;
+
+      .radio_label {
+        width: 8rem;
+      }
+    }
+  }
+}

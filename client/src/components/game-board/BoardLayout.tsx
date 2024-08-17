@@ -22,6 +22,7 @@ function BoardLayout() {
     tileWidth,
     prevMatrix,
     gap,
+    screen,
   } = useSelector((state: RootState) => state.game);
   const dispatch: AppDispatch = useDispatch();
 
@@ -59,6 +60,30 @@ function BoardLayout() {
   const handleUndoClick = () => {
     dispatch({ type: "game/set_matrix", payload: prevMatrix });
   };
+
+  useEffect(() => {
+    if (window.innerWidth <= 400) {
+      dispatch({ type: "game/set_screen", payload: "mobile" });
+    } else {
+      dispatch({ type: "game/set_screen", payload: "desktop" });
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 400) {
+        dispatch({ type: "game/set_screen", payload: "mobile" });
+      } else {
+        dispatch({ type: "game/set_screen", payload: "desktop" });
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, [dispatch]);
+
+  console.log("screen is: ", screen);
 
   return (
     <React.Fragment>

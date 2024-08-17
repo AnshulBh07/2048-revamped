@@ -3,7 +3,12 @@ import styles from "../../sass/gameBoardStyles.module.scss";
 import Tile from "./Tile";
 import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store";
-import { generateNewTile, isEndOfGame } from "../../services/helperFunctions";
+import {
+  calculateValues,
+  generateNewTile,
+  hasWon,
+  isEndOfGame,
+} from "../../services/helperFunctions";
 import { useDispatch } from "react-redux";
 import { position } from "../../services/interfaces";
 import SlideTile from "./SlideTile";
@@ -18,6 +23,8 @@ function GameBoard() {
     tileWidth,
     slide,
     positionsArr,
+    screen,
+    font_size,
   } = useSelector((state: RootState) => state.game);
 
   const dispatch: AppDispatch = useDispatch();
@@ -458,6 +465,11 @@ function GameBoard() {
     dispatch({ type: "game/set_new_tile_coords", payload: ansTuple[2] });
   }, [columns, rows, dispatch, matrix, maxScore]);
 
+  useEffect(() => {
+    if (hasWon(matrix))
+      dispatch({ type: "game/set_status", payload: "game win" });
+  }, [dispatch, matrix]);
+
   // useEffect hook that handles the keyboard events like arrow keys
   useEffect(() => {
     // functions to handle keydown for 4 directions
@@ -496,8 +508,10 @@ function GameBoard() {
       );
   }, [handleKeyUP, handleKeyDOWN, handleKeyLEFT, handleKeyRIGHT]);
 
-  const containerWidth = tileWidth * rows + gap * (rows + 1);
-  const containerHeight = tileWidth * columns + gap * (columns + 1);
+  const fnValues = calculateValues(tileWidth, gap, font_size, screen);
+
+  const containerWidth = fnValues[0] * rows + fnValues[1] * (rows + 1);
+  const containerHeight = fnValues[0] * columns + fnValues[1] * (columns + 1);
 
   return (
     <div
@@ -510,8 +524,8 @@ function GameBoard() {
         style={{
           gridTemplateRows: `repeat(${rows},auto)`,
           gridTemplateColumns: `repeat(${columns},1fr)`,
-          gap: `${gap}rem`,
-          padding: `${gap}rem`,
+          gap: `${fnValues[1]}rem`,
+          padding: `${fnValues[1]}rem`,
         }}
       >
         {new Array(rows * columns).fill(0).map((_, index) => {
@@ -538,8 +552,8 @@ function GameBoard() {
           style={{
             gridTemplateRows: `repeat(${rows},auto)`,
             gridTemplateColumns: `repeat(${columns},1fr)`,
-            gap: `${gap}rem`,
-            padding: `${gap}rem`,
+            gap: `${fnValues[1]}rem`,
+            padding: `${fnValues[1]}rem`,
           }}
         >
           {matrix.map((row, i) => {
