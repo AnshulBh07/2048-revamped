@@ -526,6 +526,12 @@ function GameBoard() {
 
       touchEndX = touches[0].clientX;
       touchEndY = touches[0].clientY;
+
+      const deltaY = touchEndY - touchStartY;
+
+      if (deltaY > 10) {
+        e.preventDefault();
+      }
     };
 
     const handleTouchEnd = () => {
