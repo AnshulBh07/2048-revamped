@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "../../sass/gameOverModalStyles.module.scss";
 import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store";
