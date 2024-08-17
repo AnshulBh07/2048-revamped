@@ -1,0 +1,44 @@
+@import "./mixins.scss";
+@import "./variables.scss";
+
+.container {
+  position: absolute;
+  @include flexProp(row, 0rem, center, center);
+  width: 100vw;
+  height: 100vh;
+  z-index: 7;
+  background-color: rgba($color: #fff, $alpha: 0.5);
+
+  .modal {
+    @include flexProp(column, 1rem, flex-start, center);
+    font-family: "poppins", sans-serif;
+    animation: appear 0.3s ease-in-out forwards;
+
+    .title {
+      font-size: 3.5rem;
+      font-weight: 600;
+      color: $text3;
+      margin-bottom: 1rem;
+    }
+
+    .score {
+      color: $text1;
+      font-size: 2rem;
+    }
+
+    .retry_btn {
+      @include ButtonProp;
+      width: auto;
+      font-size: 1.5rem;
+    }
+  }
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

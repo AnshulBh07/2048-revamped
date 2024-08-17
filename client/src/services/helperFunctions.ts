@@ -27,9 +27,70 @@ export const generateStartMatrix: (
     }
   }
 
-  console.log(matrix);
-
   return [matrix, coordsArr];
+};
+
+const delrow = [0, 1, 0, -1];
+const delcol = [1, 0, -1, 0];
+
+const isMergePossible = (
+  row: number,
+  col: number,
+  matrix: number[][],
+  vis: number[][],
+  dp: number[][]
+): boolean => {
+  const m = matrix.length;
+  const n = matrix[0].length;
+
+  if (row < 0 || row >= m || col < 0 || col >= n || vis[row][col]) return false;
+
+  vis[row][col] = 1;
+
+  let ans = false;
+
+  for (let i = 0; i < 4; i++) {
+    const nrow = row + delrow[i];
+    const ncol = col + delcol[i];
+
+    if (
+      nrow >= 0 &&
+      nrow < m &&
+      ncol >= 0 &&
+      ncol < n &&
+      matrix[row][col] === matrix[nrow][ncol]
+    ) {
+      return true; // Found a merge possibility
+    }
+
+    ans = ans || isMergePossible(nrow, ncol, matrix, vis, dp);
+  }
+
+  dp[row][col] = ans ? 1 : 0;
+  return ans;
+};
+
+export const isEndOfGame = (matrix: number[][]): boolean => {
+  const m = matrix.length;
+  const n = matrix[0].length;
+
+  const vis = new Array(m).fill(null).map(() => new Array(n).fill(0));
+  const dp = new Array(m + 1).fill(null).map(() => new Array(n + 1).fill(-1));
+
+  let isMergable = false;
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (!vis[i][j]) {
+        isMergable = isMergePossible(i, j, matrix, vis, dp);
+        if (isMergable) break; // No need to check further if a merge is possible
+      }
+    }
+    if (isMergable) break;
+  }
+
+  const hasEmptySlots = matrix.flat().some((ele) => ele === 0);
+
+  return !isMergable && !hasEmptySlots;
 };
 
 export const generateNewTile: (
@@ -53,7 +114,7 @@ export const generateNewTile: (
     }
   }
 
-  if (emptySlots.length === 0) return [false, matrix, coordArr];
+  if (emptySlots.length === 0) return [true, matrix, coordArr];
 
   //   select random coordinate from empty slots
   const index = Math.floor(Math.random() * emptySlots.length);
