@@ -28,6 +28,8 @@
         z-index: 1;
         font-weight: 600;
         color: $text1;
+        opacity: 0.5;
+        transition: all 0.2s ease-in-out;
       }
 
       input[type="radio"] {
@@ -39,7 +41,7 @@
       }
 
       .option_overlay {
-        height: 100%;
+        height: calc(100% - 2.8rem);
         width: 100%;
         position: absolute;
         top: 0;
@@ -86,7 +88,7 @@
   .container {
     width: 100%;
     padding: 1rem;
-    margin-top: 2rem;
+    margin-top: 0;
 
     .radio_group {
       gap: 2rem;
