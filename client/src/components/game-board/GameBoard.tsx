@@ -138,6 +138,7 @@ function GameBoard() {
     // set the newly got matrix as answer matrix
     dispatch({ type: "game/set_matrix", payload: ansTuple[1] });
     dispatch({ type: "game/set_new_tile_coords", payload: ansTuple[2] });
+    dispatch({ type: "game/set_undo", payload: true });
   }, [matrix, rows, columns, dispatch, maxScore]);
 
   const handleKeyDOWN = useCallback(() => {
@@ -249,6 +250,7 @@ function GameBoard() {
     // set the newly got matrix as answer matrix
     dispatch({ type: "game/set_matrix", payload: ansTuple[1] });
     dispatch({ type: "game/set_new_tile_coords", payload: ansTuple[2] });
+    dispatch({ type: "game/set_undo", payload: true });
   }, [rows, columns, matrix, maxScore, dispatch]);
 
   const handleKeyRIGHT = useCallback(() => {
@@ -358,6 +360,7 @@ function GameBoard() {
     // set the newly got matrix as answer matrix
     dispatch({ type: "game/set_matrix", payload: ansTuple[1] });
     dispatch({ type: "game/set_new_tile_coords", payload: ansTuple[2] });
+    dispatch({ type: "game/set_undo", payload: true });
   }, [rows, columns, matrix, maxScore, dispatch]);
 
   const handleKeyLEFT = useCallback(() => {
@@ -463,6 +466,7 @@ function GameBoard() {
     // set the newly got matrix as answer matrix
     dispatch({ type: "game/set_matrix", payload: ansTuple[1] });
     dispatch({ type: "game/set_new_tile_coords", payload: ansTuple[2] });
+    dispatch({ type: "game/set_undo", payload: true });
   }, [columns, rows, dispatch, matrix, maxScore]);
 
   useEffect(() => {

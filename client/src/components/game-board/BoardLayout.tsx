@@ -21,6 +21,7 @@ function BoardLayout() {
     currScore,
     maxScore,
     prevMatrix,
+    undo,
   } = useSelector((state: RootState) => state.game);
   const dispatch: AppDispatch = useDispatch();
 
@@ -54,12 +55,14 @@ function BoardLayout() {
   };
 
   const handleUndoClick = () => {
+    if (!undo) return;
+
+    dispatch({ type: "game/set_undo", payload: false });
     dispatch({ type: "game/set_matrix", payload: prevMatrix });
   };
 
   const handleHomeClick = () => {
-    dispatch({ type: "game/reset" });
-    dispatch({ type: "game/set_status", payload: "not started" });
+    dispatch({ type: "game/reset_full" });
   };
 
   useEffect(() => {

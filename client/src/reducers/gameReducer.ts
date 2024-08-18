@@ -11,7 +11,7 @@ const initialState: IGameState = {
   best: 0,
   rows: 4,
   columns: 4,
-  undo: true,
+  undo: false,
   slide: false,
   scoreAnimate: false,
   screen: "desktop",
@@ -65,6 +65,20 @@ export const gameReducer = (state = initialState, action: actionType) => {
     case "game/set_game":
       return calculateGameState(state, action.payload as string);
     case "game/reset":
+      return {
+        ...initialState,
+        prevMatrix: state.prevMatrix.map((row) => row.map(() => 0)),
+        matrix: state.matrix.map((row) => row.map(() => 0)),
+        rows: state.rows,
+        columns: state.columns,
+        gap: state.gap,
+        font_size: state.font_size,
+        tileWidth: state.tileWidth,
+        screen: state.screen,
+        status: state.status,
+      };
+
+    case "game/reset_full":
       return initialState;
     default:
       return state;

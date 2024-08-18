@@ -59,7 +59,12 @@ function LandingPage() {
                 className={styles.option_img}
               />
 
-              <p className={styles.option_text}>{option.value}</p>
+              <p
+                className={styles.option_text}
+                style={{ opacity: selected.idx === idx ? "1" : "0.5" }}
+              >
+                {option.value}
+              </p>
 
               <span
                 className={`${styles.option_overlay} ${
